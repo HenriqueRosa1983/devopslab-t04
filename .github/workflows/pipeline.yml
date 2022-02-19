@@ -37,7 +37,7 @@ jobs:
           uses: SonarSource/sonarcloud-github-action@master
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-            SONAR_TOKEN: ${{ secrets.SONARCLOUD }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   Build:
       needs: [UnitTest,SonarCloud ]
@@ -47,6 +47,10 @@ jobs:
       
       - name: Checkout Repo
         uses: actions/checkout@v2
+
+      - name: New Relic License Added
+        run: |
+          sed -i "s/licensekey/${{ secrets.NEW_RELIC_LICENSE_KEY }}/g" Dockerfile
 
       - name: Login to Heroku Container registry
         env: 
